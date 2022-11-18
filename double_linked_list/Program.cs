@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -80,15 +81,41 @@ namespace double_linked_list
             current.prev = newNode;
             current.next = newNode;
         }
-        public bool Search(int rollno, ref Node previous, ref Node current)
+        public bool Search(int rollNo, ref Node previous, ref Node current)
         {
             previous = current = START;
-            while (current != null && rollno != current.noMhs)
+            while (current != null && rollNo != current.noMhs)
             {
                 previous = current;
                 current = current.next;
             }
-            return;
+            return (current != null);
+        }
+        public bool dellNode(int rollNo)
+        {
+            Node previous, current;
+            previous = current = null;
+            if (Search(rollNo, ref previous, ref current) == false)
+                return false;
+            //the begining of data
+            if (current.next == null)
+            {
+                previous.next = null;
+                return true;
+            }
+            //Node between two nodes in the list
+            if (current == START)
+            {
+                START = START.next;
+                if (START != null)
+                    START.prev = null;
+                return true;
+            }
+
+            /*if the to be deleted is in between the list then the following lines of is exetuted. */
+            previous.next = current.next;
+            current.next.prev = previous;
+            return true;
         }
     }
     internal class Program
